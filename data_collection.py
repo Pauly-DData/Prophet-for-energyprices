@@ -2,6 +2,7 @@ import pandas as pd
 from prophet import Prophet
 import matplotlib.pyplot as plt
 
+
 # The file path to your dataset
 file_path = "C:\Spyder - Python\Stichting Park Medisch Verbruik Dataset\Stichting Park Medisch Verbruik Dataset - Elektriciteit\Clean\FINAL HOURLY MERGED dataset - Price Usagae Temp 20220901 - 20230901"
 
@@ -20,10 +21,14 @@ print(data.isnull().sum())
 
 #check for outliers in usage and price data
 data.boxplot(column=['UsageLDN'])
-plt.show()
+
+#plot show behind # for smoother run
+#plt.show()
 
 data.boxplot(column=['Price'])
-plt.show()
+
+#plot show behind # for smoother run
+#plt.show()
 
 #we see that price has alot of outliers so we are going to scatter plot the dataset to visualise change over time
 #first things first we'll convert the data column to datetime
@@ -38,12 +43,26 @@ plt.title('Price over time')
 plt.xlabel('Date')
 plt.ylabel('Price')
 
-plt.show()
+#plot show behind # for smoother run
+#plt.show()
 
 #we now have a better understanding about our data and we want to delete some columns so we can proceed with building our model
 #lets first rename some columns so we can work more easier with the df
 data = data.rename(columns={'StartDate': 'Datum', 'UsageLDN': 'Verbruik KwH', 'Price': 'Prijs'})
 
-#usage and price 
+#usage and price variables need to be transformed because their values need to align with new column names
+data['Prijs'] = data['Prijs'] / 1000
+
+#now we need to remove some columns because these are not as intresting for our modelling right now. We will remove 'DD', 'FH', 'FF', 'T', 'SQ', 'Timestamp'
+remove_columns = ['DD', 'FH', 'FF', 'T', 'SQ', 'Timestamp']
+data = data.drop(columns=remove_columns)
+
+#we have done the data collection, exploration and the cleaning part. For today our job is done, but we will save the new df to a file we'll be using for our model
+import os
+
+file_path = os.path.join(os.getcwd(), 'prophet_dataset_v1.csv')
+data.to_csv(file_path, index=False)
+print(f"File saved at: {file_path}")
 
 
+ 
