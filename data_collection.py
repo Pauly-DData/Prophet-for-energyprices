@@ -44,6 +44,6 @@ plt.show()
 #lets first rename some columns so we can work more easier with the df
 data = data.rename(columns={'StartDate': 'Datum', 'UsageLDN': 'Verbruik KwH', 'Price': 'Prijs'})
 
-#usage and price
+#usage and price 
 
 
