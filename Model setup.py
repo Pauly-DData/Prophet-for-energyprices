@@ -30,9 +30,10 @@ future = model.make_future_dataframe(periods=24, freq='H')
 #with forecast we instruct the model to do predictions based on the 'future' df. The model learns from the historical data to predict
 forecast = model.predict(future)
 
-# Display the forecast based for the next x hours. The ds in the df is equal to the time and time prediction. 
-forecast[['ds', 'yhat', 'yhat_lower', 'yhat_upper']].tail(365)
+# Display the forecast based for the next x hours. The ds in the df is equal to the time and time prediction. 'yhat' is the predicted value for the specific time (ds). 
+# 'yhat_lower' and 'yhat_upper' represent the upper and lower bound of the predictions. These values present an indication on the uncertainty of the prediction
+# '.tail' is used to display the last x rows of the prediction
+forecast[['ds', 'yhat', 'yhat_lower', 'yhat_upper']].tail(24)
 
-future = model.make_future_dataframe(periods=365, freq='H')
-forecast = model.predict(future)
+#show the results
 print(forecast[['ds', 'yhat', 'yhat_lower', 'yhat_upper']])
