@@ -7,10 +7,11 @@ file_path = r"C:\Users\PaulDriessens\OneDrive - Energyhouse B.V\Documenten\Paul'
 data_model = pd.read_csv(file_path)
 
 #just checking out if the dataset looks like we want it to be
-print(data_model.head())
+#print(data_model.head())
 
 #for the prophet model we need to rename the columns to 'ds' (date column) and to 'y' that is the target column
-data_model.rename(columns={'Verbruik KwH': 'y', 'Datum': 'ds'}, inplace=True)
+data_model.rename(columns={'Prijs': 'y', 'Datum': 'ds'}, inplace=True)
+prophet_data = data_model[['ds', 'y']]
 
 print(data_model.head())
 
@@ -38,7 +39,7 @@ forecast = model.predict(future)
 forecast[['ds', 'yhat', 'yhat_lower', 'yhat_upper']].tail(720)
 
 #show the results
-print(forecast[['ds', 'yhat', 'yhat_lower', 'yhat_upper']])
+#print(forecast[['ds', 'yhat', 'yhat_lower', 'yhat_upper']])
 
 # intresting, but now lets try to visualize because we can better understand the model's predictions a little better. 
 # Firstly we we'll be focusing at the 24 hour period we tried to forecast using Matplotlib to create a custom plot
@@ -47,25 +48,25 @@ from prophet.plot import plot_plotly
 fig = plot_plotly(model, forecast)
 fig.show()
 
-
-#nog uitwerken om beter te begrijpen
+#now that we have a model setup and a first plot using the Prophet model, we are going to check out whether our model performs well or that we are going to need to do some more adjustments.
+#we first add some functions from the Prophet and Matplot libary 
 from prophet.diagnostics import cross_validation
 from prophet.diagnostics import performance_metrics
 from prophet.plot import plot_cross_validation_metric
 import matplotlib.pyplot as plt
 
 # Define the initial training period, period between each cutoff date, and the forecast horizon
-initial = '180 days'  # e.g., 6 months of data as the initial training period
-period = '30 days'    # e.g., 30 days between each cutoff date
-horizon = '7 days'    # e.g., 7 days forecast horizon
+initial = '210 days'  # e.g., 6 (180 days) months of data as the initial training period - Set histrorical data to train the model - caputing season but als have some left so we need  6 - 9 months of training data
+period = '14 days'    # e.g., 30 days between each cutoff date - Determines how often to make a new forecast. After each period, a new cutoff is created, the model is retrained up to that point and a new forecast is made.
+horizon = '45 days'    # e.g., 7 days forecast horizon - set how far in the future each forecast should predict 
 
-# Perform cross-validation
+# Perform cross-validation - create a new df to store the cross validation
 df_cv = cross_validation(model, initial=initial, period=period, horizon=horizon)
 
-# Calculate performance metrics
+# Calculate performance metrics (MSE, RMSE, MAE, MAPE, MDAPE, SMAPE, Coverage)
 df_performance = performance_metrics(df_cv)
-print(df_performance.head())
+print(df_performance)
 
 # Plotting the performance metric, e.g., MAE
-fig = plot_cross_validation_metric(df_cv, metric='mae')
+fig = plot_cross_validation_metric(df_cv, metric='coverage')
 plt.show()

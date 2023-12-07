@@ -1,13 +1,17 @@
 import pandas as pd 
 from prophet import Prophet
 import matplotlib.pyplot as plt
-
+from ydata_profiling import ProfileReport
 
 # The file path to your dataset
 file_path = "C:\Spyder - Python\Stichting Park Medisch Verbruik Dataset\Stichting Park Medisch Verbruik Dataset - Elektriciteit\Clean\FINAL HOURLY MERGED dataset - Price Usagae Temp 20220901 - 20230901"
 
 #read the file as a csv file in the new variable 'data'
 data = pd.read_csv(file_path)
+
+profile = ProfileReport(data,title="Energy Usage")
+
+profile.to_file("Energy_usgage.html")
 
 #show the first 5 rows of the data
 print(data.head())
@@ -58,11 +62,11 @@ remove_columns = ['DD', 'FH', 'FF', 'T', 'SQ', 'Timestamp']
 data = data.drop(columns=remove_columns)
 
 #we have done the data collection, exploration and the cleaning part. For today our job is done, but we will save the new df to a file we'll be using for our model
-import os
+#import os
 
-file_path = os.path.join(os.getcwd(), 'prophet_dataset_v1.csv')
-data.to_csv(file_path, index=False)
-print(f"File saved at: {file_path}")
+#file_path = os.path.join(os.getcwd(), 'prophet_dataset_v1.csv')
+#data.to_csv(file_path, index=False)
+#print(f"File saved at: {file_path}")
 
 
  

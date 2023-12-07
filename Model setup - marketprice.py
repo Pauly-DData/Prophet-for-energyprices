@@ -58,7 +58,7 @@ import matplotlib.pyplot as plt
 # Define the initial training period, period between each cutoff date, and the forecast horizon
 initial = '210 days'  # e.g., 6 (180 days) months of data as the initial training period - Set histrorical data to train the model - caputing season but als have some left so we need  6 - 9 months of training data
 period = '14 days'    # e.g., 30 days between each cutoff date - Determines how often to make a new forecast. After each period, a new cutoff is created, the model is retrained up to that point and a new forecast is made.
-horizon = '45 days'    # e.g., 7 days forecast horizon - set how far in the future each forecast should predict 
+horizon = '7 days'    # e.g., 7 days forecast horizon - set how far in the future each forecast should predict 
 
 # Perform cross-validation - create a new df to store the cross validation
 df_cv = cross_validation(model, initial=initial, period=period, horizon=horizon)
