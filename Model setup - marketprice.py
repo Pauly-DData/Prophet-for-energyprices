@@ -2,7 +2,7 @@ import pandas as pd
 from prophet import Prophet
 
 #the file we are now loading is the cleaned file from our previous data collection and cleaning script
-file_path = r"C:\Users\PaulDriessens\OneDrive - Energyhouse B.V\Documenten\Paul's map\Project Data24\Prophet-for-energyprices\20231212 - Verbruik en prijzen van EAN 871689200000103887 (Park Medisch) van 202208 - 202310.csv"
+file_path = r"C:\Users\PaulDriessens\OneDrive - Energyhouse B.V\Documenten\Paul's map\Project Data24\Prophet-for-energyprices\20231212 - Verbruik en prijzen van EAN  (Park Medisch) van 202208 - 202310.csv"
 
 data_model = pd.read_csv(file_path)
 
