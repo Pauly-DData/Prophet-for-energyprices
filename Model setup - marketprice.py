@@ -2,7 +2,7 @@ import pandas as pd
 from prophet import Prophet
 
 #the file we are now loading is the cleaned file from our previous data collection and cleaning script
-file_path = r"C:\Users\PaulDriessens\OneDrive - Energyhouse B.V\Documenten\Paul's map\Project Data24\Prophet-for-energyprices\prophet_dataset_v1.csv"
+file_path = r"C:\Users\PaulDriessens\OneDrive - Energyhouse B.V\Documenten\Paul's map\Project Data24\Prophet-for-energyprices\20231212 - Verbruik en prijzen van EAN 871689200000103887 (Park Medisch) van 202208 - 202310.csv"
 
 data_model = pd.read_csv(file_path)
 
@@ -10,7 +10,7 @@ data_model = pd.read_csv(file_path)
 #print(data_model.head())
 
 #for the prophet model we need to rename the columns to 'ds' (date column) and to 'y' that is the target column
-data_model.rename(columns={'Prijs': 'y', 'Datum': 'ds'}, inplace=True)
+data_model.rename(columns={'VerbruikKwH': 'y', 'Datum': 'ds'}, inplace=True)
 prophet_data = data_model[['ds', 'y']]
 
 print(data_model.head())
@@ -39,7 +39,7 @@ forecast = model.predict(future)
 forecast[['ds', 'yhat', 'yhat_lower', 'yhat_upper']].tail(720)
 
 #show the results
-#print(forecast[['ds', 'yhat', 'yhat_lower', 'yhat_upper']])
+print(forecast[['ds', 'yhat', 'yhat_lower', 'yhat_upper']])
 
 # intresting, but now lets try to visualize because we can better understand the model's predictions a little better. 
 # Firstly we we'll be focusing at the 24 hour period we tried to forecast using Matplotlib to create a custom plot
@@ -56,9 +56,9 @@ from prophet.plot import plot_cross_validation_metric
 import matplotlib.pyplot as plt
 
 # Define the initial training period, period between each cutoff date, and the forecast horizon
-initial = '210 days'  # e.g., 6 (180 days) months of data as the initial training period - Set histrorical data to train the model - caputing season but als have some left so we need  6 - 9 months of training data
-period = '14 days'    # e.g., 30 days between each cutoff date - Determines how often to make a new forecast. After each period, a new cutoff is created, the model is retrained up to that point and a new forecast is made.
-horizon = '7 days'    # e.g., 7 days forecast horizon - set how far in the future each forecast should predict 
+initial = '365 days'  # e.g., 6 (180 days) months of data as the initial training period - Set histrorical data to train the model - caputing season but als have some left so we need  6 - 9 months of training data
+period = '15 days'    # e.g., 30 days between each cutoff date - Determines how often to make a new forecast. After each period, a new cutoff is created, the model is retrained up to that point and a new forecast is made.
+horizon = '2 days'    # e.g., 7 days forecast horizon - set how far in the future each forecast should predict 
 
 # Perform cross-validation - create a new df to store the cross validation
 df_cv = cross_validation(model, initial=initial, period=period, horizon=horizon)
@@ -69,4 +69,4 @@ print(df_performance)
 
 # Plotting the performance metric, e.g., MAE
 fig = plot_cross_validation_metric(df_cv, metric='coverage')
-plt.show()
+plt.show
